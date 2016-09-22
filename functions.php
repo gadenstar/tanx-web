@@ -7,50 +7,73 @@
  * @package TanX_V1
  */
 
-if ( ! function_exists( 'tanx_v1_setup' ) ) :
+define('inc', get_template_directory_uri() . '/inc');
+
+define('UIKIT_CSS', inc . '/uikit/css');
+define('UIKIT_JS', inc . '/uikit/js');
+
 /**
- * Sets up theme defaults and registers support for various WordPress features.
- *
- * Note that this function is hooked into the after_setup_theme hook, which
- * runs before the init hook. The init hook is too late for some features, such
- * as indicating support for post thumbnails.
+ * Enqueue scripts and styles.
  */
+function tanx_v1_scripts() {
+	wp_enqueue_style( 'uikit', UIKIT_CSS . '/uikit.min.css', array(),'2.18.0' );
+// 	wp_enqueue_style( 'accordion', get_template_directory_uri() . '/uikit/css/components/accordion.min.css', array(),'2.18.0' );
+// 	wp_enqueue_style( 'sticky', get_template_directory_uri() . '/uikit/css/components/sticky.min.css', array(),'2.18.0' );
+// 	wp_enqueue_style( 'slidenav', get_template_directory_uri() . '/uikit/css/components/slidenav.min.css', array(),'2.18.0' );
+// 	wp_enqueue_style( 'dotnav', get_template_directory_uri() . '/uikit/css/components/dotnav.min.css', array(),'2.18.0' );
+// 	wp_enqueue_style( 'slideshow', get_template_directory_uri() . '/uikit/css/components/slideshow.min.css', array(),'2.18.0' );
+// 	wp_enqueue_style( 'lazyload', get_template_directory_uri() . '/inc/css/bttrlazyloading.min.css', array(),'2.18.0' );
+// 	//wp_enqueue_style( 'tooltip', get_template_directory_uri() . '/uikit/css/components/tooltip.min.css', array(),'2.18.0' );
+ 	wp_enqueue_style( 'tanx_v1-style', get_stylesheet_uri() );
+
+// 	wp_enqueue_script( 'modernizr', get_template_directory_uri() . '/js/modernizr.custom.js', array( 'jquery' ),'2.18.0' );
+ 	wp_enqueue_script( 'uikit', UIKIT_JS . '/uikit.min.js', array( 'jquery' ),'2.18.0' );
+// 	wp_enqueue_script( 'uk-accordion', get_template_directory_uri() . '/uikit/js/components/accordion.min.js', array( 'jquery' ), '20120206');
+// 	wp_enqueue_script( 'uikit-grid', get_template_directory_uri() . '/uikit/js/components/grid.min.js', array( 'jquery' ),'2.18.0' );
+// 	wp_enqueue_script( 'sticky', get_template_directory_uri() . '/uikit/js/components/sticky.min.js', array(), '20120206',true);
+// 	wp_enqueue_script( 'slideset', get_template_directory_uri() . '/uikit/js/components/slideset.min.js', array(), '20120206',true);
+// 	wp_enqueue_script( 'slideshow', get_template_directory_uri() . '/uikit/js/components/slideshow.min.js', array(), '20120206',true);
+// 	wp_enqueue_script( 'uikit-scrollspy', get_template_directory_uri() . '/uikit/js/core/scrollspy.min.js', array( 'jquery' ),'2.18.0' );
+// 	 wp_enqueue_script( 'uikit-parallax', get_template_directory_uri() . '/uikit/js/components/parallax.min.js', array( 'jquery' ),'2.18.0' );
+// 	wp_enqueue_script( 'smooth-scroll', get_template_directory_uri() . '/uikit/js/core/smooth-scroll.min.js', array( 'jquery' ),'2.18.0' );
+// 	wp_enqueue_script( 'modal', get_template_directory_uri() . '/uikit/js/core/modal.min.js', array( 'jquery' ),'2.18.0' );
+// 	wp_enqueue_script( 'lazyload', get_template_directory_uri() . '/js/jquery.bttrlazyloading.min.js', array( 'jquery' ),'2.18.0' );
+// 	wp_enqueue_script( 'lightbox', get_template_directory_uri() . '/uikit/js/components/lightbox.min.js', array( 'jquery' ),'2.18.0' );
+// 	//wp_enqueue_script( 'tooltip', get_template_directory_uri() . '/uikit/js/components/tooltip.min.js', array( 'jquery' ),'2.18.0' );
+// 	wp_enqueue_script( 'base', get_template_directory_uri() . '/js/base.js', array(), '20120206' , true);
+// 	if (vp_option('vpt_option.loading_tg')=='1'){
+// 	wp_enqueue_script( 'classie', get_template_directory_uri() . '/js/classie.js', array( 'jquery' ),'2.18.0',true );
+// 	wp_enqueue_script( 'pathLoader', get_template_directory_uri() . '/js/pathLoader.js', array(), '20120206',true );
+// 	wp_enqueue_script( 'main', get_template_directory_uri() . '/js/main.js', array(), '20120206',true );
+// 	}
+// 	wp_enqueue_script( 'nii_framework-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20130115', true );
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'tanx_v1_scripts' );
+
+
+function v7v3_get_avatar($avatar) {
+    $avatar = str_replace(array("www.gravatar.com","0.gravatar.com","1.gravatar.com","2.gravatar.com"),
+"cd.v7v3.com",$avatar);
+    return $avatar;
+}
+add_filter( 'get_avatar', 'v7v3_get_avatar', 10, 3 );
+
+if ( ! function_exists( 'tanx_v1_setup' ) ) :
 function tanx_v1_setup() {
-	/*
-	 * Make theme available for translation.
-	 * Translations can be filed in the /languages/ directory.
-	 * If you're building a theme based on TanX V1, use a find and replace
-	 * to change 'tanx_v1' to the name of your theme in all the template files.
-	 */
 	load_theme_textdomain( 'tanx_v1', get_template_directory() . '/languages' );
 
-	// Add default posts and comments RSS feed links to head.
 	add_theme_support( 'automatic-feed-links' );
-
-	/*
-	 * Let WordPress manage the document title.
-	 * By adding theme support, we declare that this theme does not use a
-	 * hard-coded <title> tag in the document head, and expect WordPress to
-	 * provide it for us.
-	 */
 	add_theme_support( 'title-tag' );
+	add_theme_support( 'post-thumbnails');
+	set_post_thumbnail_size( 250, 250, true );
+	add_image_size( '680', 680, 460, true );
 
-	/*
-	 * Enable support for Post Thumbnails on posts and pages.
-	 *
-	 * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-	 */
-	add_theme_support( 'post-thumbnails' );
-
-	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus( array(
 		'primary' => esc_html__( 'Primary', 'tanx_v1' ),
 	) );
-
-	/*
-	 * Switch default core markup for search form, comment form, and comments
-	 * to output valid HTML5.
-	 */
 	add_theme_support( 'html5', array(
 		'search-form',
 		'comment-form',
@@ -58,8 +81,6 @@ function tanx_v1_setup() {
 		'gallery',
 		'caption',
 	) );
-
-	// Set up the WordPress core custom background feature.
 	add_theme_support( 'custom-background', apply_filters( 'tanx_v1_custom_background_args', array(
 		'default-color' => 'ffffff',
 		'default-image' => '',
@@ -145,21 +166,7 @@ function tanx_v1_widgets_init() {
 }
 add_action( 'widgets_init', 'tanx_v1_widgets_init' );
 
-/**
- * Enqueue scripts and styles.
- */
-function tanx_v1_scripts() {
-	wp_enqueue_style( 'tanx_v1-style', get_stylesheet_uri() );
 
-	wp_enqueue_script( 'tanx_v1-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
-
-	wp_enqueue_script( 'tanx_v1-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
-}
-add_action( 'wp_enqueue_scripts', 'tanx_v1_scripts' );
 
 /**
  * Implement the Custom Header feature.
