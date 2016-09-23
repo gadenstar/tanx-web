@@ -1,6 +1,6 @@
 
-@color-dark: #292C30;
-@color-main: #00B8E7;
+@color-dark: #38385f;
+@color-main: #58A7EF;
 
 .transition(){
 	-webkit-transition: all 150ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
@@ -29,8 +29,12 @@ img {
 // 	margin: 0 auto;
 // }
 
-
-
+.uk-panel-box {
+	padding: 20px;
+}
+.uk-overlay {
+	max-width: none;
+}
 
 h1.site-title {
 	margin: 0;
@@ -39,7 +43,7 @@ h1.site-title {
 
 .site-header {
 	background: @color-dark;
-	padding: 20px 0;
+	padding: 30px 0;
 	.site-branding {
 		text-align: center;
 		padding: 50px 0;
@@ -73,7 +77,7 @@ h1.site-title {
 				    	display: block;
 				    	position: relative;
 				    	&::after {
-				    		 background-color: rgba(151, 154, 161, 0.06);
+				    		background-color: rgba(151, 154, 161, 0.06);
 							content: '';
 						    display: block;
 						    position: absolute;
@@ -103,11 +107,13 @@ h1.site-title {
 				    top: 0;
 				    left: 0;
 				    z-index: 999; 
-				    background: #2d2f34;
-				    border-color: #32363b;
+				    background: #3c3c6b;
+				    border-color: #424277;
+				    border-style: solid;
 				    padding: 49px 0 5px 0;
 				    border-width: 1px;
-				    border-radius: 3px;
+				    width: 150px;
+				    //border-radius: 3px;
 
 				    li {
 				    	text-align: left;
@@ -157,10 +163,60 @@ h1.site-title {
 
 .site-content {
 	background: @color-dark;
+
 	article.post {
-		background: #fff;
+		background: #5A5E8A;
+		-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+    	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+    	.transition();
 		.post_thumbnail {
-			margin: -15px -15px 0 -15px;
+			margin: -20px -20px 20px -20px;
+		}
+		.post_cat {
+			padding: 0px 0 5px 0;
+			span {
+				width: 3px;
+				height: 3px;
+				display: inline-block;
+				border: 3px solid lighten(@color-main, 10%);
+				border-radius: 50%;
+			}
+			a {
+				color: #8395BF;
+				&:hover {
+					color:#f8f8f8;
+				}
+			}
+		}
+		.entry-title {
+			a {
+				color: #f8f8f8;
+			}
+			margin-bottom: 5px;
+		}
+		.entry-content {
+			color: #ccc;
+			margin-bottom: 20px;
+		}
+		.entry-footer {
+			span {
+				i {
+					color: #8395BF;
+					margin-left: 15px;
+				}
+				a {
+					color: #8395BF;
+				}
+			}
+			.posted-on {
+				i {
+					margin-left: 0;
+				}
+			}
+		}
+		&:hover {
+			-webkit-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+    		box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
 		}
 	}
 }

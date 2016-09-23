@@ -39,42 +39,88 @@ function tanx_v1_posted_on() {
 }
 endif;
 
+if ( ! function_exists( 'tanx_v1_post_thumbnail' ) ) :
+/**
+ * Prints HTML with meta information for the current post-date/time and author.
+ */
+function tanx_v1_post_thumbnail() {
+
+	if (has_post_thumbnail()) { 	 
+		//the_post_thumbnail(array(680, 460, ' uk-overlay-scale'));
+		$image = get_the_post_thumbnail_url( null, '680' );
+	} else if ($images = get_children(array('post_parent' => get_the_ID(), 'post_type' => 'attachment', 'post_mime_type' => 'image'))) { //如果没设置判断是否有图片
+		$image = current($images);
+		$image = wp_get_attachment_image_src($image->ID, array(680, 460)); //图片的宽高
+			   //echo '<img class="uk-overlay-scale" src="' . $image[0] . '" />';
+		$image = $image[0];
+	}
+	if ($image == '') {
+		echo '';
+	}else if ($image != ''){
+		echo '<div class="post_thumbnail uk-overlay uk-overlay-hover"><a class="" href="'.esc_url( get_permalink() ).'" rel="bookmark"><img class="uk-overlay-spin" src="' . $image . '" /></a></div>';
+	}
+}
+endif;
+
 if ( ! function_exists( 'tanx_v1_entry_footer' ) ) :
 /**
  * Prints HTML with meta information for the categories, tags and comments.
  */
 function tanx_v1_entry_footer() {
-	// Hide category and tag text for pages.
-	if ( 'post' === get_post_type() ) {
-		/* translators: used between list items, there is a space after the comma */
-		$categories_list = get_the_category_list( esc_html__( ', ', 'tanx_v1' ) );
-		if ( $categories_list && tanx_v1_categorized_blog() ) {
-			printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'tanx_v1' ) . '</span>', $categories_list ); // WPCS: XSS OK.
-		}
+	// // Hide category and tag text for pages.
+	// if ( 'post' === get_post_type() ) {
+	// 	/* translators: used between list items, there is a space after the comma */
+	// 	$categories_list = get_the_category_list( esc_html__( ', ', 'tanx_v1' ) );
+	// 	if ( $categories_list && tanx_v1_categorized_blog() ) {
+	// 		printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'tanx_v1' ) . '</span>', $categories_list ); // WPCS: XSS OK.
+	// 	}
 
-		/* translators: used between list items, there is a space after the comma */
-		$tags_list = get_the_tag_list( '', esc_html__( ', ', 'tanx_v1' ) );
-		if ( $tags_list ) {
-			printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'tanx_v1' ) . '</span>', $tags_list ); // WPCS: XSS OK.
-		}
+	// 	/* translators: used between list items, there is a space after the comma */
+	// 	$tags_list = get_the_tag_list( '', esc_html__( ', ', 'tanx_v1' ) );
+	// 	if ( $tags_list ) {
+	// 		printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'tanx_v1' ) . '</span>', $tags_list ); // WPCS: XSS OK.
+	// 	}
+	// }
+	// if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+	// 	echo '<span class="comments-link">';
+	// 	/* translators: %s: post title */
+	// 	comments_popup_link( sprintf( wp_kses( __( 'Leave a Comment<span class="screen-reader-text"> on %s</span>', 'tanx_v1' ), array( 'span' => array( 'class' => array() ) ) ), get_the_title() ) );
+	// 	echo '</span>';
+	// }
+
+	
+
+	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
 	}
 
-	if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
-		echo '<span class="comments-link">';
-		/* translators: %s: post title */
-		comments_popup_link( sprintf( wp_kses( __( 'Leave a Comment<span class="screen-reader-text"> on %s</span>', 'tanx_v1' ), array( 'span' => array( 'class' => array() ) ) ), get_the_title() ) );
-		echo '</span>';
-	}
+	$time_string = sprintf( $time_string,
+		esc_attr( get_the_date( 'c' ) ),
+		esc_html( get_the_date() ),
+		esc_attr( get_the_modified_date( 'c' ) ),
+		esc_html( get_the_modified_date() )
+	);
 
-	edit_post_link(
-		sprintf(
-			/* translators: %s: Name of current post */
-			esc_html__( 'Edit %s', 'tanx_v1' ),
-			the_title( '<span class="screen-reader-text">"', '"</span>', false )
-		),
-		'<span class="edit-link">',
+	$posted_on = sprintf(
+		esc_html_x( '%s', 'post date', 'tanx_v1' ),
+		'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
+	);
+	$byline = sprintf(
+		esc_html_x( '%s', 'post author', 'tanx_v1' ),
+		'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
+	);
+	echo '<span class="posted-on"><i class=" uk-icon-clock-o"></i>' . $posted_on . '</span><span class="byline"><i class="uk-icon-user"></i> ' . $byline . '</span>'; 
+	edit_post_link('Edit',
+		'<span class="edit-link"><i class="uk-icon-edit"></i>',
 		'</span>'
 	);
+		if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+		echo '<span class="comments-link uk-float-right"><i class="uk-icon-comment"></i>';
+		comments_popup_link('0', '1', '%', 'comments-link', 'Comments are off for this post');
+		echo '</span>';
+
+	}
 }
 endif;
 

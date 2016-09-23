@@ -54,12 +54,12 @@ function tanx_v1_scripts() {
 add_action( 'wp_enqueue_scripts', 'tanx_v1_scripts' );
 
 
-function v7v3_get_avatar($avatar) {
-    $avatar = str_replace(array("www.gravatar.com","0.gravatar.com","1.gravatar.com","2.gravatar.com"),
-"cd.v7v3.com",$avatar);
-    return $avatar;
+//调用ssl 头像链接
+function get_ssl_avatar($avatar) {
+   $avatar = preg_replace('/.*\/avatar\/(.*)\?s=([\d]+)&.*/','<img src="https://secure.gravatar.com/avatar/$1?s=$2&d=mm" class="avatar avatar-$2" height="$2" width="$2">',$avatar);
+   return $avatar;
 }
-add_filter( 'get_avatar', 'v7v3_get_avatar', 10, 3 );
+add_filter('get_avatar', 'get_ssl_avatar');
 
 if ( ! function_exists( 'tanx_v1_setup' ) ) :
 function tanx_v1_setup() {
