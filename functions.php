@@ -81,6 +81,9 @@ function tanx_v1_setup() {
 		'gallery',
 		'caption',
 	) );
+	// add_theme_support( 'post-formats', array(
+	// 	'aside', 'image', 'video', 'quote', 'link', 'gallery', 'status', 'audio', 'chat'
+	// ) );
 	add_theme_support( 'custom-background', apply_filters( 'tanx_v1_custom_background_args', array(
 		'default-color' => 'ffffff',
 		'default-image' => '',

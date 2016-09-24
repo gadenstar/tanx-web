@@ -10,20 +10,7 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('uk-panel uk-panel-box'); ?>>
-	<?php if (is_single()) {
 
-	} else {
-		tanx_v1_post_thumbnail();
-	}
-	echo get_post_format();
-	
-	 ?>
-	<div class="post_cat">
-		<span></span>
-		<?php 
-			the_category( ' ' );
-		?>
-	</div>
 	<header class="entry-header">
 
 		<?php
@@ -41,7 +28,12 @@
 		<?php
 		endif; ?>
 	</header><!-- .entry-header -->
-
+	<div class="post_cat">
+		<span></span>
+		<?php 
+			the_category( ' ' );
+		?>
+	</div>
 	<div class="entry-content">
 		<?php
 

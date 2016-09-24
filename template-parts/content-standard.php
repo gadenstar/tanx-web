@@ -11,13 +11,14 @@
 
 <article id="post-<?php the_ID(); ?>" <?php post_class('uk-panel uk-panel-box'); ?>>
 	<?php if (is_single()) {
-
+		echo "w asfsdfkj";
 	} else {
 		tanx_v1_post_thumbnail();
 	}
-	echo get_post_format();
+	
 	
 	 ?>
+	 fghfghfgh
 	<div class="post_cat">
 		<span></span>
 		<?php 

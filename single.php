@@ -8,14 +8,14 @@
  */
 
 get_header(); ?>
-
-	<div id="primary" class="content-area">
+<div class="uk-grid">
+	<div id="primary" class="content-area uk-width-3-4">
 		<main id="main" class="site-main" role="main">
 
 		<?php
 		while ( have_posts() ) : the_post();
 
-			get_template_part( 'template-parts/content', get_post_format() );
+			get_template_part( 'template-parts/content', 'single' );
 
 			the_post_navigation();
 
@@ -32,4 +32,7 @@ get_header(); ?>
 
 <?php
 get_sidebar();
+?>
+</div>
+<?php
 get_footer();
