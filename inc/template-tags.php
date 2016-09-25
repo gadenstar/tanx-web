@@ -97,7 +97,7 @@ function tanx_v1_entry_footer() {
 
 	$time_string = sprintf( $time_string,
 		esc_attr( get_the_date( 'c' ) ),
-		esc_html( get_the_date() ),
+		esc_html( get_the_date(' Y-m-d') ),
 		esc_attr( get_the_modified_date( 'c' ) ),
 		esc_html( get_the_modified_date() )
 	);
@@ -111,15 +111,15 @@ function tanx_v1_entry_footer() {
 		'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
 	);
 	echo '<span class="posted-on"><i class=" uk-icon-clock-o"></i>' . $posted_on . '</span><span class="byline"><i class="uk-icon-user"></i> ' . $byline . '</span>'; 
-	edit_post_link('Edit',
-		'<span class="edit-link"><i class="uk-icon-edit"></i>',
-		'</span>'
-	);
+	// edit_post_link('Edit',
+	// 	'<span class="edit-link"><i class="uk-icon-edit"></i>',
+	// 	'</span>'
+	// );
 		if ( ! is_single() && ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
-		echo '<span class="comments-link uk-float-right"><i class="uk-icon-comment"></i>';
+		echo '<span class="comments-link"><i class="uk-icon-comment"></i>';
 		comments_popup_link('0', '1', '%', 'comments-link', 'Comments are off for this post');
 		echo '</span>';
-
+		//echo '<button class="more-link uk-float-right "><a class="uk-button" href="' . esc_url( get_permalink() ) . '">阅读全文&raquo;</a></button>';
 	}
 }
 endif;

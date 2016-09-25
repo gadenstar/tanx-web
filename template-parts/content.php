@@ -15,7 +15,7 @@
 	} else {
 		tanx_v1_post_thumbnail();
 	}
-	echo get_post_format();
+	//echo get_post_format();
 	
 	 ?>
 	<div class="post_cat">
