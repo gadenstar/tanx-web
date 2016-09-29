@@ -39,6 +39,83 @@ function tanx_v1_posted_on() {
 }
 endif;
 
+if ( ! function_exists( 'tanx_v1_post_meta' ) ) :
+/**
+ * Prints HTML with meta information for the current post-date/time and author.
+ */
+function tanx_v1_post_meta() {
+	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+	}
+
+	$time_string = sprintf( $time_string,
+		esc_attr( get_the_date( 'c' ) ),
+		esc_html( get_the_date(' Y-m-d') ),
+		esc_attr( get_the_modified_date( 'c' ) ),
+		esc_html( get_the_modified_date() )
+	);
+
+	$posted_on = sprintf(
+		esc_html_x( '%s', 'post date', 'tanx_v1' ),
+		'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
+	);
+	$byline = sprintf(
+		esc_html_x( '%s', 'post author', 'tanx_v1' ),
+		'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
+	);
+	echo '<span class="posted-on"><i class=" uk-icon-clock-o"></i>' . $posted_on . '</span><span class="byline"><i class="uk-icon-user"></i> ' . $byline . '</span>'; 
+	// edit_post_link('Edit',
+	// 	'<span class="edit-link"><i class="uk-icon-edit"></i>',
+	// 	'</span>'
+	// );
+		if ( ! post_password_required() && ( comments_open() || get_comments_number() ) ) {
+		echo '<span class="comments-link uk-float-right"><i class="uk-icon-comment"></i>';
+		comments_popup_link('0', '1', '%', 'comments-link', 'Comments are off for this post');
+		echo '</span>';
+		//echo '<button class="more-link uk-float-right "><a class="uk-button" href="' . esc_url( get_permalink() ) . '">阅读全文&raquo;</a></button>';
+	}
+
+}
+endif;
+
+if ( ! function_exists( 'tanx_v1_post_view' ) ) :
+/**
+ * Prints HTML with meta information for the current post-date/time and author.
+ */
+function tanx_v1_post_view() {
+	if (is_singular())
+	{
+	  global $post;
+	  $post_ID = $post->ID;
+	  if($post_ID)
+	  {
+		  $post_views = (int)get_post_meta($post_ID, 'views', true);
+		  if(!update_post_meta($post_ID, 'views', ($post_views+1)))
+		  {
+			add_post_meta($post_ID, 'views', 1, true);
+		  }
+	  }
+	}
+}
+add_action('wp_head', 'tanx_v1_post_view');
+ 
+/// 函数名称：post_views
+/// 函数作用：取得文章的阅读次数
+function post_views($before = '(点击 ', $after = ' 次)', $echo = 1)
+{
+  global $post;
+  $post_ID = $post->ID;
+  $views = (int)get_post_meta($post_ID, 'views', true);
+  echo '<span class=""><i class="uk-icon-eye"></i>';
+  if ($echo) echo $before, number_format($views), $after;
+  else return $views;
+  echo "</span>";
+}
+endif;
+
+
+
 if ( ! function_exists( 'tanx_v1_post_thumbnail' ) ) :
 /**
  * Prints HTML with meta information for the current post-date/time and author.
@@ -154,6 +231,13 @@ function tanx_v1_categorized_blog() {
 	}
 }
 
+
+function tanx_v1_post_navigation() {
+	echo '<nav class="navigation post-navigation">';
+	echo '<span class="pre uk-h3">'.get_previous_post_link( '&laquo; %link', '%title', false, '', 'category' ).'</span>';
+	echo '<span class="next uk-float-right uk-h3">'.get_next_post_link( '%link &raquo;', '%title', false, '', 'category' ).'</span>';
+	echo '</nav>';
+}
 /**
  * Flush out the transients used in tanx_v1_categorized_blog.
  */

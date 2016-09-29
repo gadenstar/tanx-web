@@ -8,12 +8,15 @@
  */
 
 ?>
-
 <article id="post-<?php the_ID(); ?>" <?php post_class('uk-panel uk-panel-box'); ?>>
 	<header class="entry-header uk-contrast">
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 	</header><!-- .entry-header -->
-
+	
+	<div class="entry-meta">
+		<?php tanx_v1_post_meta(); ?>
+		<?php post_views(' ', ''); ?>
+	</div>
 	<div class="entry-content">
 		<?php
 			the_content();
